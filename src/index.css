@@ -421,3 +421,36 @@ main { min-height: calc(100vh - 64px); }
   border-radius: 4px;
   font-size: 0.85em;
 }
+
+/* Coupon row in checkout */
+.coupon-row {
+  display: flex;
+  gap: 10px;
+}
+.coupon-row input {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  text-transform: uppercase;
+}
+.coupon-row input:disabled {
+  background: #f9fafb;
+  color: #6b7280;
+}
+
+/* Summary rows on checkout */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  color: #4b5563;
+}
+.summary-row.discount {
+  color: #166534;
+  font-weight: 500;
+}
+.discount-cell {
+  color: #166534;
+}

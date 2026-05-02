@@ -19,7 +19,12 @@ export default function Header() {
         <nav className="nav">
           <NavLink to="/">Catalog</NavLink>
           {user && <NavLink to="/orders">Orders</NavLink>}
-          {user?.role === "ADMIN" && <NavLink to="/admin/products">Admin</NavLink>}
+          {user?.role === "ADMIN" && (
+            <>
+              <NavLink to="/admin/products">Products</NavLink>
+              <NavLink to="/admin/coupons">Coupons</NavLink>
+            </>
+          )}
         </nav>
         <div className="header-right">
           {user ? (

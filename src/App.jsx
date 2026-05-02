@@ -4,6 +4,7 @@ import { CartProvider } from "./cart/CartContext";
 import AdminRoute from "./components/AdminRoute";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminProducts from "./pages/admin/AdminProducts";
 import Cart from "./pages/Cart";
@@ -79,6 +80,14 @@ export default function App() {
                 element={
                   <AdminRoute>
                     <AdminProductForm />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/coupons"
+                element={
+                  <AdminRoute>
+                    <AdminCoupons />
                   </AdminRoute>
                 }
               />

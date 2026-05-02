@@ -113,6 +113,22 @@ export function OrderDetail() {
           ))}
         </tbody>
         <tfoot>
+          {order.subtotalAmount && order.discountAmount > 0 && (
+            <>
+              <tr>
+                <td colSpan="3">Subtotal</td>
+                <td>
+                  {order.subtotalAmount} {order.currency}
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="3">Discount ({order.couponCode})</td>
+                <td className="discount-cell">
+                  −{order.discountAmount} {order.currency}
+                </td>
+              </tr>
+            </>
+          )}
           <tr>
             <td colSpan="3">Total</td>
             <td>
