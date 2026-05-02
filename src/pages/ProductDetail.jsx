@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { useCart } from "../cart/CartContext";
+import OtherSellersPanel from "../components/OtherSellersPanel";
 import RecommendationStrip from "../components/RecommendationStrip";
 
 export default function ProductDetail() {
@@ -57,10 +58,21 @@ export default function ProductDetail() {
           <p>{product.description}</p>
           <div className="price-row">
             <strong className="price">
-              {product.priceAmount} {product.priceCurrency}
+              {product.bestListing
+                ? `${product.bestListing.priceAmount} ${product.bestListing.priceCurrency}`
+                : `${product.priceAmount} ${product.priceCurrency}`}
             </strong>
-            <span className="stock">Stock: {product.stockQuantity}</span>
+            <span className="stock">
+              Stock: {product.bestListing ? product.bestListing.stockQuantity : product.stockQuantity}
+            </span>
           </div>
+          {product.bestListing && (
+            <p className="muted">
+              Sold by <strong>{product.bestListing.sellerName}</strong>
+              {" · ships in "}
+              {product.bestListing.shippingDays}d
+            </p>
+          )}
           <div className="qty-row">
             <label>
               Qty
@@ -84,6 +96,8 @@ export default function ProductDetail() {
           {added && <p className="success">Added to cart ✓</p>}
         </div>
       </div>
+
+      <OtherSellersPanel productId={product.id} />
 
       <RecommendationStrip
         title="Similar products"

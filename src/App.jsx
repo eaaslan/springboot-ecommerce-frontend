@@ -4,9 +4,11 @@ import { CartProvider } from "./cart/CartContext";
 import AdminRoute from "./components/AdminRoute";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SellerRoute from "./components/SellerRoute";
 import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminProducts from "./pages/admin/AdminProducts";
+import AdminSellers from "./pages/admin/AdminSellers";
 import Cart from "./pages/Cart";
 import Catalog from "./pages/Catalog";
 import Checkout from "./pages/Checkout";
@@ -14,6 +16,9 @@ import Login from "./pages/Login";
 import { OrderDetail, OrderList } from "./pages/Orders";
 import ProductDetail from "./pages/ProductDetail";
 import Register from "./pages/Register";
+import SellerApply from "./pages/seller/SellerApply";
+import SellerDashboard from "./pages/seller/SellerDashboard";
+import SellerListings from "./pages/seller/SellerListings";
 
 export default function App() {
   return (
@@ -89,6 +94,38 @@ export default function App() {
                   <AdminRoute>
                     <AdminCoupons />
                   </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/sellers"
+                element={
+                  <AdminRoute>
+                    <AdminSellers />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/seller/apply"
+                element={
+                  <ProtectedRoute>
+                    <SellerApply />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/seller/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <SellerDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/seller/listings"
+                element={
+                  <SellerRoute>
+                    <SellerListings />
+                  </SellerRoute>
                 }
               />
               <Route path="*" element={<div className="container">Not found</div>} />

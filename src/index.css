@@ -454,3 +454,38 @@ main { min-height: calc(100vh - 64px); }
 .discount-cell {
   color: #166534;
 }
+
+/* Marketplace V1 — seller dashboard summary cards */
+.seller-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.seller-summary-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.seller-summary-card strong {
+  font-size: 1.15rem;
+}
+
+/* Other sellers panel on product detail */
+.other-sellers {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+.other-sellers h3 {
+  margin-bottom: 8px;
+}
+
+.status-PENDING {
+  background: #fef3c7;
+  color: #92400e;
+}
