@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { useCart } from "../cart/CartContext";
+import RecommendationStrip from "../components/RecommendationStrip";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -83,6 +84,11 @@ export default function ProductDetail() {
           {added && <p className="success">Added to cart ✓</p>}
         </div>
       </div>
+
+      <RecommendationStrip
+        title="Similar products"
+        path={`/api/recommendations/products/${product.id}/similar?k=6`}
+      />
     </div>
   );
 }
