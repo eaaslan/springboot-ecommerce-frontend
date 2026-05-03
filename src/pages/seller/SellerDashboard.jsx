@@ -29,7 +29,10 @@ export default function SellerDashboard() {
     <div className="container">
       <div className="page-header">
         <h1>Seller dashboard</h1>
-        <Link to="/seller/listings" className="btn btn-primary">Manage listings</Link>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Link to="/seller/orders" className="btn">Incoming orders</Link>
+          <Link to="/seller/listings" className="btn btn-primary">Manage listings</Link>
+        </div>
       </div>
 
       <div className="seller-summary">

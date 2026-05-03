@@ -116,6 +116,39 @@ export function OrderDetail() {
           </table>
         </div>
       ))}
+
+      {order.subOrders && order.subOrders.length > 0 && (
+        <>
+          <h3>Per-seller breakdown</h3>
+          <table className="cart-table">
+            <thead>
+              <tr>
+                <th>Seller</th>
+                <th>Subtotal</th>
+                <th>Commission</th>
+                <th>Payout</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.subOrders.map((s) => (
+                <tr key={s.id}>
+                  <td>{s.sellerName || <em className="muted">Platform</em>}</td>
+                  <td>{s.subtotalAmount} {s.currency}</td>
+                  <td className="discount-cell">
+                    −{s.commissionAmount} ({s.commissionPct}%)
+                  </td>
+                  <td><strong>{s.payoutAmount} {s.currency}</strong></td>
+                  <td>
+                    <span className={`status status-${s.status}`}>{s.status}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
       <table className="cart-table">
         <tfoot>
           {order.subtotalAmount && order.discountAmount > 0 && (

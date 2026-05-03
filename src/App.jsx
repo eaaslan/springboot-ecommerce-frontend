@@ -19,6 +19,7 @@ import Register from "./pages/Register";
 import SellerApply from "./pages/seller/SellerApply";
 import SellerDashboard from "./pages/seller/SellerDashboard";
 import SellerListings from "./pages/seller/SellerListings";
+import SellerOrders from "./pages/seller/SellerOrders";
 
 export default function App() {
   return (
@@ -125,6 +126,14 @@ export default function App() {
                 element={
                   <SellerRoute>
                     <SellerListings />
+                  </SellerRoute>
+                }
+              />
+              <Route
+                path="/seller/orders"
+                element={
+                  <SellerRoute>
+                    <SellerOrders />
                   </SellerRoute>
                 }
               />
