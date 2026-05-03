@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
+// useState/useEffect imported at top — used by ProductCard below for lazy review fetch
 import { useAuth } from "../auth/AuthContext";
 import RecommendationStrip from "../components/RecommendationStrip";
 
@@ -148,6 +149,26 @@ function ProductCard({ product, highlight }) {
   const currency = best ? best.priceCurrency : product.priceCurrency;
   const stock = best ? best.stockQuantity : product.stockQuantity;
   const sellerName = best?.sellerName;
+  const [review, setReview] = useState(null);
+
+  // Lazy fetch review aggregate — small N+1 here is OK for the demo (16 cards/page).
+  // For prod, this would be folded into the product list response server-side.
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get(`/api/products/${product.id}/reviews`)
+      .then((r) => {
+        if (cancelled) return;
+        const list = r.data || [];
+        if (list.length === 0) return;
+        const avg = list.reduce((s, x) => s + x.rating, 0) / list.length;
+        setReview({ avg, count: list.length });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [product.id]);
 
   return (
     <Link to={`/products/${product.id}`} className="card">
@@ -164,8 +185,19 @@ function ProductCard({ product, highlight }) {
         <div className="card-name">{product.name}</div>
         {sellerName && <div className="card-seller">Sold by {sellerName}</div>}
         <div className="card-rating">
-          {"★".repeat(5)}
-          <span className="count">{product.category?.name || ""}</span>
+          {review ? (
+            <>
+              {"★".repeat(Math.round(review.avg))}
+              {"☆".repeat(5 - Math.round(review.avg))}
+              <span className="count">
+                {review.avg.toFixed(1)} · {review.count}
+              </span>
+            </>
+          ) : (
+            <span className="count" style={{ color: "var(--muted)" }}>
+              {product.category?.name || ""}
+            </span>
+          )}
         </div>
         <div className="card-price">
           {price}
