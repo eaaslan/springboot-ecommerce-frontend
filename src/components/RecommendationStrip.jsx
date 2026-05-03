@@ -39,7 +39,15 @@ export default function RecommendationStrip({ title, path }) {
       <div className="reco-list">
         {items.map((p) => (
           <Link to={`/products/${p.id}`} key={p.id} className="reco-card">
-            <div className="card-img" style={{ height: 100, marginBottom: 6, borderRadius: 3 }} />
+            <div
+              className="card-img"
+              style={{
+                height: 100,
+                marginBottom: 6,
+                borderRadius: 3,
+                ...(p.imageUrl ? { backgroundImage: `url(${p.imageUrl})` } : {}),
+              }}
+            />
             <div style={{ fontSize: 12, marginBottom: 4 }}>{p.name}</div>
             <strong style={{ color: "var(--accent)" }}>
               {p.priceAmount} <span style={{ fontSize: 11, fontWeight: 500 }}>{p.priceCurrency}</span>
