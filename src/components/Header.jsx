@@ -45,6 +45,7 @@ export default function Header() {
               <NavLink to="/admin/products">Products</NavLink>
               <NavLink to="/admin/coupons">Coupons</NavLink>
               <NavLink to="/admin/sellers">Sellers</NavLink>
+              <NavLink to="/admin/payouts">Payouts</NavLink>
             </>
           )}
         </nav>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { useCart } from "../cart/CartContext";
@@ -68,7 +68,14 @@ export default function ProductDetail() {
           </div>
           {product.bestListing && (
             <p className="muted">
-              Sold by <strong>{product.bestListing.sellerName}</strong>
+              Sold by{" "}
+              {product.bestListing.sellerId ? (
+                <Link to={`/sellers/${product.bestListing.sellerId}`}>
+                  <strong>{product.bestListing.sellerName}</strong>
+                </Link>
+              ) : (
+                <strong>{product.bestListing.sellerName}</strong>
+              )}
               {" · ships in "}
               {product.bestListing.shippingDays}d
             </p>

@@ -34,7 +34,14 @@ export default function Cart() {
                   <td>
                     <Link to={`/products/${it.productId}`}>{it.productName}</Link>
                     {it.sellerName && (
-                      <div className="muted small">Sold by <strong>{it.sellerName}</strong></div>
+                      <div className="muted small">
+                        Sold by{" "}
+                        {it.sellerId ? (
+                          <Link to={`/sellers/${it.sellerId}`}><strong>{it.sellerName}</strong></Link>
+                        ) : (
+                          <strong>{it.sellerName}</strong>
+                        )}
+                      </div>
                     )}
                   </td>
                   <td>

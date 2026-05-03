@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SellerRoute from "./components/SellerRoute";
 import AdminCoupons from "./pages/admin/AdminCoupons";
+import AdminPayouts from "./pages/admin/AdminPayouts";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminSellers from "./pages/admin/AdminSellers";
@@ -20,6 +21,7 @@ import SellerApply from "./pages/seller/SellerApply";
 import SellerDashboard from "./pages/seller/SellerDashboard";
 import SellerListings from "./pages/seller/SellerListings";
 import SellerOrders from "./pages/seller/SellerOrders";
+import SellerStorefront from "./pages/seller/SellerStorefront";
 
 export default function App() {
   return (
@@ -105,6 +107,15 @@ export default function App() {
                   </AdminRoute>
                 }
               />
+              <Route
+                path="/admin/payouts"
+                element={
+                  <AdminRoute>
+                    <AdminPayouts />
+                  </AdminRoute>
+                }
+              />
+              <Route path="/sellers/:id" element={<SellerStorefront />} />
               <Route
                 path="/seller/apply"
                 element={

@@ -7,13 +7,17 @@ export default function SellerOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
+  function refresh() {
+    setLoading(true);
+    setError("");
     api
       .get("/api/seller-orders/me")
       .then((r) => setOrders(r.data || []))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, []);
+  }
+
+  useEffect(refresh, []);
 
   const totals = orders.reduce(
     (acc, s) => ({
@@ -65,31 +69,61 @@ export default function SellerOrders() {
             <th>Payout</th>
             <th>Status</th>
             <th>Placed</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {orders.map((s) => (
-            <tr key={s.id}>
-              <td>#{s.id}</td>
-              <td>#{s.orderId}</td>
-              <td>{s.subtotalAmount} {s.currency}</td>
-              <td className="discount-cell">
-                −{s.commissionAmount} ({s.commissionPct}%)
-              </td>
-              <td><strong>{s.payoutAmount} {s.currency}</strong></td>
-              <td>
-                <span className={`status status-${s.status}`}>{s.status}</span>
-              </td>
-              <td>{s.createdAt ? new Date(s.createdAt).toLocaleString() : "—"}</td>
-            </tr>
+            <SellerOrderRow key={s.id} sub={s} onChanged={() => refresh()} />
           ))}
           {!loading && orders.length === 0 && (
             <tr>
-              <td colSpan={7} className="muted">No incoming orders yet.</td>
+              <td colSpan={8} className="muted">No incoming orders yet.</td>
             </tr>
           )}
         </tbody>
       </table>
     </div>
+  );
+}
+
+function SellerOrderRow({ sub, onChanged }) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  async function decide(approve) {
+    if (!confirm(approve ? "Approve return (refund)?" : "Reject return?")) return;
+    setBusy(true);
+    setErr("");
+    try {
+      await api.post(`/api/seller-orders/${sub.id}/return-decision`, { approve });
+      onChanged();
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <tr>
+      <td>#{sub.id}</td>
+      <td>#{sub.orderId}</td>
+      <td>{sub.subtotalAmount} {sub.currency}</td>
+      <td className="discount-cell">−{sub.commissionAmount} ({sub.commissionPct}%)</td>
+      <td><strong>{sub.payoutAmount} {sub.currency}</strong></td>
+      <td><span className={`status status-${sub.status}`}>{sub.status}</span></td>
+      <td>{sub.createdAt ? new Date(sub.createdAt).toLocaleString() : "—"}</td>
+      <td>
+        {sub.status === "RETURN_REQUESTED" && (
+          <>
+            <button className="link-btn" disabled={busy} onClick={() => decide(true)}>Approve</button>
+            {" · "}
+            <button className="link-btn" disabled={busy} onClick={() => decide(false)}>Reject</button>
+          </>
+        )}
+        {err && <div className="error small">{err}</div>}
+      </td>
+    </tr>
   );
 }

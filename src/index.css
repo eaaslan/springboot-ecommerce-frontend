@@ -489,3 +489,54 @@ main { min-height: calc(100vh - 64px); }
   background: #fef3c7;
   color: #92400e;
 }
+.status-RETURN_REQUESTED {
+  background: #fef3c7;
+  color: #92400e;
+}
+.status-RETURN_REJECTED {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.status-REFUNDED,
+.status-PAID {
+  background: #dcfce7;
+  color: #166534;
+}
+.status-SCHEDULED {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* Review form (inline on order detail) */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85em;
+}
+.review-form select,
+.review-form textarea {
+  font-size: inherit;
+  padding: 2px 4px;
+}
+.btn-sm {
+  padding: 2px 8px;
+  font-size: 0.85em;
+}
+.small {
+  font-size: 0.85em;
+}
+
+/* Reviews list on storefront */
+.reviews {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.review-row {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 0;
+}
+.review-row p {
+  margin: 4px 0 0;
+}

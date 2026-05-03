@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
+import ReviewForm from "../components/ReviewForm";
 
 export function OrderList() {
   const [orders, setOrders] = useState([]);
@@ -89,33 +90,54 @@ export function OrderDetail() {
       </p>
 
       <h3>Items</h3>
-      {groupBySeller(order.items).map(([sellerName, items]) => (
-        <div key={sellerName || "_platform"} style={{ marginBottom: 16 }}>
-          <h4 style={{ margin: "12px 0 6px" }}>
-            {sellerName ? <>Sold by <strong>{sellerName}</strong></> : <em className="muted">Platform</em>}
-          </h4>
-          <table className="cart-table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Line</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((it) => (
-                <tr key={it.id ?? `${it.productId}-${it.sellerId}`}>
-                  <td>{it.productName}</td>
-                  <td>{it.priceAmount} {it.priceCurrency}</td>
-                  <td>{it.quantity}</td>
-                  <td>{(it.priceAmount * it.quantity).toFixed(2)} {it.priceCurrency}</td>
+      {groupBySeller(order.items).map(([sellerName, items]) => {
+        const first = items[0];
+        const sellerId = first?.sellerId;
+        return (
+          <div key={sellerName || "_platform"} style={{ marginBottom: 16 }}>
+            <h4 style={{ margin: "12px 0 6px" }}>
+              {sellerName ? (
+                sellerId ? (
+                  <>Sold by <Link to={`/sellers/${sellerId}`}><strong>{sellerName}</strong></Link></>
+                ) : (
+                  <>Sold by <strong>{sellerName}</strong></>
+                )
+              ) : (
+                <em className="muted">Platform</em>
+              )}
+            </h4>
+            <table className="cart-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Line</th>
+                  <th>Review</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+              </thead>
+              <tbody>
+                {items.map((it) => (
+                  <tr key={it.id ?? `${it.productId}-${it.sellerId}`}>
+                    <td>{it.productName}</td>
+                    <td>{it.priceAmount} {it.priceCurrency}</td>
+                    <td>{it.quantity}</td>
+                    <td>{(it.priceAmount * it.quantity).toFixed(2)} {it.priceCurrency}</td>
+                    <td>
+                      {it.sellerId && order.status === "CONFIRMED" ? (
+                        <ReviewForm
+                          sellerId={it.sellerId}
+                          productId={it.productId}
+                        />
+                      ) : <span className="muted">—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
 
       {order.subOrders && order.subOrders.length > 0 && (
         <>
@@ -128,21 +150,12 @@ export function OrderDetail() {
                 <th>Commission</th>
                 <th>Payout</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {order.subOrders.map((s) => (
-                <tr key={s.id}>
-                  <td>{s.sellerName || <em className="muted">Platform</em>}</td>
-                  <td>{s.subtotalAmount} {s.currency}</td>
-                  <td className="discount-cell">
-                    −{s.commissionAmount} ({s.commissionPct}%)
-                  </td>
-                  <td><strong>{s.payoutAmount} {s.currency}</strong></td>
-                  <td>
-                    <span className={`status status-${s.status}`}>{s.status}</span>
-                  </td>
-                </tr>
+                <SubOrderRow key={s.id} sub={s} />
               ))}
             </tbody>
           </table>
@@ -182,6 +195,46 @@ export function OrderDetail() {
         <Link to="/orders">← Back to orders</Link>
       </p>
     </div>
+  );
+}
+
+function SubOrderRow({ sub }) {
+  const [status, setStatus] = useState(sub.status);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  async function requestReturn() {
+    if (!confirm(`Request a return for sub-order #${sub.id}?`)) return;
+    setBusy(true);
+    setErr("");
+    try {
+      const r = await api.post(`/api/orders/sub-orders/${sub.id}/return-request`);
+      setStatus((r.data || {}).status || "RETURN_REQUESTED");
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <tr>
+      <td>{sub.sellerName || <em className="muted">Platform</em>}</td>
+      <td>{sub.subtotalAmount} {sub.currency}</td>
+      <td className="discount-cell">
+        −{sub.commissionAmount} ({sub.commissionPct}%)
+      </td>
+      <td><strong>{sub.payoutAmount} {sub.currency}</strong></td>
+      <td><span className={`status status-${status}`}>{status}</span></td>
+      <td>
+        {sub.sellerId && status === "PENDING" && (
+          <button className="link-btn" disabled={busy} onClick={requestReturn}>
+            {busy ? "…" : "Request return"}
+          </button>
+        )}
+        {err && <div className="error small">{err}</div>}
+      </td>
+    </tr>
   );
 }
 
