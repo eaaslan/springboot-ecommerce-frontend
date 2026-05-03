@@ -14,6 +14,7 @@ import AdminSellers from "./pages/admin/AdminSellers";
 import Cart from "./pages/Cart";
 import Catalog from "./pages/Catalog";
 import Checkout from "./pages/Checkout";
+import Demo from "./pages/Demo";
 import Login from "./pages/Login";
 import { OrderDetail, OrderList } from "./pages/Orders";
 import ProductDetail from "./pages/ProductDetail";
@@ -33,6 +34,7 @@ export default function App() {
           <main>
             <Routes>
               <Route path="/" element={<Catalog />} />
+              <Route path="/demo" element={<Demo />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

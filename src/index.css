@@ -499,6 +499,29 @@ a:hover { text-decoration: underline; }
 }
 .review-row:last-child { border-bottom: 0; }
 .review-row p { margin: 4px 0 0; font-size: 13px; }
+
+/* Demo accounts page */
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.demo-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.demo-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
 .review-form {
   display: flex;
   flex-direction: column;

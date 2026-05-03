@@ -92,6 +92,9 @@ export default function Header() {
           {categories.map((c) => (
             <NavLink key={c.id} to={`/?categoryId=${c.id}`}>{c.name}</NavLink>
           ))}
+          <NavLink to="/demo" style={{ marginLeft: "auto", color: "var(--accent)" }}>
+            Demo accounts
+          </NavLink>
           {user?.role === "ADMIN" && (
             <>
               <span style={{ flex: 1 }} />
