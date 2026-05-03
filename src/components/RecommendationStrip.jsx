@@ -34,18 +34,16 @@ export default function RecommendationStrip({ title, path }) {
   if (items.length === 0) return null;
 
   return (
-    <section className="rec-strip">
+    <section className="reco-strip">
       <h3>{title}</h3>
-      <div className="rec-row">
+      <div className="reco-list">
         {items.map((p) => (
-          <Link to={`/products/${p.id}`} key={p.id} className="rec-card">
-            <div className="rec-img" />
-            <div className="rec-body">
-              <p className="rec-name">{p.name}</p>
-              <strong>
-                {p.priceAmount} {p.priceCurrency}
-              </strong>
-            </div>
+          <Link to={`/products/${p.id}`} key={p.id} className="reco-card">
+            <div className="card-img" style={{ height: 100, marginBottom: 6, borderRadius: 3 }} />
+            <div style={{ fontSize: 12, marginBottom: 4 }}>{p.name}</div>
+            <strong style={{ color: "var(--accent)" }}>
+              {p.priceAmount} <span style={{ fontSize: 11, fontWeight: 500 }}>{p.priceCurrency}</span>
+            </strong>
           </Link>
         ))}
       </div>

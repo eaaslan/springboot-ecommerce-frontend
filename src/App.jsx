@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { CartProvider } from "./cart/CartContext";
 import AdminRoute from "./components/AdminRoute";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SellerRoute from "./components/SellerRoute";
@@ -151,6 +152,7 @@ export default function App() {
               <Route path="*" element={<div className="container">Not found</div>} />
             </Routes>
           </main>
+          <Footer />
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>
