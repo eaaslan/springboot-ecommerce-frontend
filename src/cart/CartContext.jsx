@@ -29,8 +29,8 @@ export function CartProvider({ children }) {
     refresh();
   }, [refresh]);
 
-  async function addItem(productId, quantity = 1) {
-    await api.post("/api/cart/items", { productId, quantity });
+  async function addItem(productId, quantity = 1, listingId = null) {
+    await api.post("/api/cart/items", { productId, quantity, listingId });
     await refresh();
   }
 

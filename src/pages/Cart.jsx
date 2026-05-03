@@ -33,6 +33,9 @@ export default function Cart() {
                 <tr key={it.productId}>
                   <td>
                     <Link to={`/products/${it.productId}`}>{it.productName}</Link>
+                    {it.sellerName && (
+                      <div className="muted small">Sold by <strong>{it.sellerName}</strong></div>
+                    )}
                   </td>
                   <td>
                     {it.priceAmount} {it.priceCurrency}

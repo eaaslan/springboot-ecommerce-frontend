@@ -89,29 +89,34 @@ export function OrderDetail() {
       </p>
 
       <h3>Items</h3>
+      {groupBySeller(order.items).map(([sellerName, items]) => (
+        <div key={sellerName || "_platform"} style={{ marginBottom: 16 }}>
+          <h4 style={{ margin: "12px 0 6px" }}>
+            {sellerName ? <>Sold by <strong>{sellerName}</strong></> : <em className="muted">Platform</em>}
+          </h4>
+          <table className="cart-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Line</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((it) => (
+                <tr key={it.id ?? `${it.productId}-${it.sellerId}`}>
+                  <td>{it.productName}</td>
+                  <td>{it.priceAmount} {it.priceCurrency}</td>
+                  <td>{it.quantity}</td>
+                  <td>{(it.priceAmount * it.quantity).toFixed(2)} {it.priceCurrency}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
       <table className="cart-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th>Line</th>
-          </tr>
-        </thead>
-        <tbody>
-          {order.items.map((it) => (
-            <tr key={it.id}>
-              <td>{it.productName}</td>
-              <td>
-                {it.priceAmount} {it.priceCurrency}
-              </td>
-              <td>{it.quantity}</td>
-              <td>
-                {(it.priceAmount * it.quantity).toFixed(2)} {it.priceCurrency}
-              </td>
-            </tr>
-          ))}
-        </tbody>
         <tfoot>
           {order.subtotalAmount && order.discountAmount > 0 && (
             <>
@@ -145,4 +150,20 @@ export function OrderDetail() {
       </p>
     </div>
   );
+}
+
+function groupBySeller(items) {
+  const map = new Map();
+  for (const it of items) {
+    const key = it.sellerName || null;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(it);
+  }
+  // Items with sellerName first; platform/null bucket last for stable order.
+  return Array.from(map.entries()).sort(([a], [b]) => {
+    if (a === b) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    return a.localeCompare(b);
+  });
 }

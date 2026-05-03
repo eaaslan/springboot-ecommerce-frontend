@@ -35,7 +35,7 @@ export default function ProductDetail() {
     setAdded(false);
     setError("");
     try {
-      await addItem(product.id, qty);
+      await addItem(product.id, qty, product.bestListing?.id ?? null);
       setAdded(true);
     } catch (e) {
       setError(e.message);
