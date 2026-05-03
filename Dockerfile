@@ -17,4 +17,4 @@ EXPOSE 80
 
 # Allow runtime substitution if ever needed.
 HEALTHCHECK --interval=15s --timeout=3s --retries=3 \
-  CMD wget -qO- http://localhost/ >/dev/null 2>&1 || exit 1
+  CMD curl -fs http://localhost/ >/dev/null || exit 1
