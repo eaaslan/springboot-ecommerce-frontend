@@ -208,9 +208,11 @@ a:hover { text-decoration: underline; }
 }
 .card-img {
   height: 200px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  background-color: #fef3c7;
+  background-image: linear-gradient(135deg, #fef3c7, #fde68a);
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 .card-body {
   padding: 10px 12px 12px;
@@ -412,7 +414,11 @@ a:hover { text-decoration: underline; }
 }
 .detail-img {
   height: 480px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  background-color: #fef3c7;
+  background-image: linear-gradient(135deg, #fef3c7, #fde68a);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 4px;
 }
 .detail-body h1 { margin: 0 0 8px; font-size: 20px; font-weight: 600; }
