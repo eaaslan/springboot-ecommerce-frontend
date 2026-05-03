@@ -6,7 +6,11 @@
 //      POST /api/auth/refresh, save new tokens, retry the original request once
 //   3. If refresh itself fails → clear tokens + bubble up 401 (caller will see auth error)
 
-const BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
+// `??` (not `||`) — empty string is a *valid* value: it means "use relative
+// /api paths so nginx in the same container network can reverse-proxy them".
+// `||` would treat "" as falsy and fall back to localhost:8080, which the
+// browser can only reach on the dev machine, not from a containerised stack.
+const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
 
 function getAccessToken() {
   return localStorage.getItem("accessToken");
